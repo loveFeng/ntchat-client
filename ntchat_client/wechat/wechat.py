@@ -150,19 +150,17 @@ class WeChatManager:
         """
         if params is None:
             return
-        match action:
-            case "send_image" | "send_file" | "send_video":
-                file: str = params.get("file_path")
-                params["file_path"] = self.file_cache.handle_file(
-                    file, self.config.cache_path
-                )
-            case "send_gif":
-                file: str = params.get("file")
-                params["file"] = self.file_cache.handle_file(
-                    file, self.config.cache_path
-                )
-            case _:
-                pass
+
+        if action == "send_image" or action == "send_file" or action == "send_video":
+            file: str = params.get("file_path")
+            params["file_path"] = self.file_cache.handle_file(
+                file, self.config.cache_path
+            )
+        elif action == "send_gif":
+            file: str = params.get("file")
+            params["file"] = self.file_cache.handle_file(
+                file, self.config.cache_path
+            )
         return params
 
     def _handle_api(self, request: Request) -> Response:

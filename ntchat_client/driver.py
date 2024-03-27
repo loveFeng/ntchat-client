@@ -1,7 +1,7 @@
 """全局后端
 """
 import logging
-from typing import Callable, Optional
+from typing import Callable, Optional, List
 
 import uvicorn
 from fastapi import FastAPI
@@ -23,13 +23,13 @@ class Config(BaseModel):
     """是否包含适配器路由的 schema，默认为 `True`"""
     fastapi_reload: bool = False
     """开启/关闭冷重载"""
-    fastapi_reload_dirs: Optional[list[str]] = None
+    fastapi_reload_dirs: Optional[List[str]] = None
     """重载监控文件夹列表，默认为 uvicorn 默认值"""
     fastapi_reload_delay: Optional[float] = None
     """重载延迟，默认为 uvicorn 默认值"""
-    fastapi_reload_includes: Optional[list[str]] = None
+    fastapi_reload_includes: Optional[List[str]] = None
     """要监听的文件列表，支持 glob pattern，默认为 uvicorn 默认值"""
-    fastapi_reload_excludes: Optional[list[str]] = None
+    fastapi_reload_excludes: Optional[List[str]] = None
     """不要监听的文件列表，支持 glob pattern，默认为 uvicorn 默认值"""
 
     class Config:

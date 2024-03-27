@@ -57,19 +57,20 @@ class FileCache:
     def handle_file(self, file: str, file_path: str) -> str:
         """处理文件url"""
         file_type = URL(file)
-        match file_type.scheme:
-            case "file":
-                return str(Path(unquote(file)).absolute())
-            case "base64":
-                filename = Path(file_path) / self.get_seq()
-                file_value = base64.standard_b64decode(file[9:])
-                self._save(file_value, filename)
-                return str(filename.absolute())
-            case "http" | "https":
-                filename = Path(file_path) / self.get_seq()
-                file_value = self.get(file)
-                self._save(file_value, filename)
-                return str(filename.absolute())
+
+        if file_type.scheme ==  "file":
+            return str(Path(unquote(file)).absolute())
+        elif file_type.scheme == "base64":
+            filename = Path(file_path) / self.get_seq()
+            file_value = base64.standard_b64decode(file[9:])
+            self._save(file_value, filename)
+            return str(filename.absolute())
+
+        elif file_type.scheme == "http" or file_type.scheme == "https":
+            filename = Path(file_path) / self.get_seq()
+            file_value = self.get(file)
+            self._save(file_value, filename)
+            return str(filename.absolute())
 
 
 def scheduler_job(config: Config) -> None:

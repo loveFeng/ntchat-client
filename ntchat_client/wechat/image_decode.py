@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Tuple
 
 import numpy as np
 
@@ -22,7 +22,7 @@ class FileTypes:
 class FileDecoder:
     """文件解密类"""
 
-    file_map: dict[str, tuple[int, int]] = {
+    file_map: Dict[str, Tuple[int, int]] = {
         "jpg": (0xFF, 0xD8),
         "png": (0x89, 0x50),
         "gif": (0x47, 0x49),

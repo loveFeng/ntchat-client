@@ -3,7 +3,7 @@
 import os
 from ipaddress import IPv4Address
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Mapping, Optional, Set, Tuple, Union
+from typing import TYPE_CHECKING, Any, Mapping, Optional, Set, Tuple, Union, Dict
 
 from pydantic import BaseSettings, IPvAnyAddress
 from pydantic.env_settings import (
@@ -19,18 +19,18 @@ from .log import logger
 
 
 class CustomEnvSettings(EnvSettingsSource):
-    def __call__(self, settings: BaseSettings) -> dict[str, Any]:
+    def __call__(self, settings: BaseSettings) -> Dict[str, Any]:
         """
         Build environment variables suitable for passing to the Model.
         """
-        d: dict[str, Optional[str]] = {}
+        d: Dict[str, Optional[str]] = {}
 
         if settings.__config__.case_sensitive:
             env_vars: Mapping[str, Optional[str]] = os.environ  # pragma: no cover
         else:
             env_vars = {k.lower(): v for k, v in os.environ.items()}
 
-        env_file_vars: dict[str, Optional[str]] = {}
+        env_file_vars: Dict[str, Optional[str]] = {}
         env_file = (
             self.env_file
             if self.env_file != env_file_sentinel
