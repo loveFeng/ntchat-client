@@ -21,6 +21,8 @@ from ntchat_client.utils import escape_tag, notify
 from .cache import FileCache
 from .image_decode import FileDecoder
 from .qrcode import draw_qrcode
+import os
+import signal
 
 wechat_client: "WeChatManager" = None
 """全局微信客户端"""
@@ -126,14 +128,22 @@ class WeChatManager:
         登出hook
         """
         logger.error("<m>wechat</m> - 检测到微信登出，终止程序...")
-        raise SystemExit()
+        # 获取当前进程的 ID
+        current_pid = os.getpid()
+
+        # 向当前进程发送 SIGTERM 信号，请求正常退出
+        os.kill(current_pid, signal.SIGTERM)
 
     def quit(self, _: ntchat.WeChat) -> NoReturn:
         """
         微信退出
         """
         logger.error("<m>wechat</m> - 检测到微信退出，终止程序...")
-        raise SystemExit()
+        # 获取当前进程的 ID
+        current_pid = os.getpid()
+
+        # 向当前进程发送 SIGTERM 信号，请求正常退出
+        os.kill(current_pid, signal.SIGTERM)
 
     def login_qrcode(self, _: ntchat.WeChat, message: dict) -> None:
         """
